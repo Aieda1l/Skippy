@@ -313,6 +313,15 @@ class GUIOverlay(QMainWindow):
         self.enemy_color_dropdown.setCurrentIndex(current_enemy_color_index)
         self.layout.addWidget(self.enemy_color_dropdown)
 
+        # Target limb dropdown menu
+        self.target_limb_label = QLabel("Target Limb:")
+        self.layout.addWidget(self.target_limb_label)
+        self.target_limb_dropdown = QComboBox()
+        self.target_limb_dropdown.addItems(["Nose", "Left Eye", "Right Eye", "Left Ear", "Right Ear", "Left Shoulder", "Right Shoulder", "Left Elbow", "Right Elbow", "Left Wrist", "Right Wrist", "Left Hip", "Right Hip", "Left Knee", "Right Knee", "Left Ankle", "Right Ankle"])
+        current_target_limb_index = self.target_limb_dropdown.findText("Nose")
+        self.target_limb_dropdown.setCurrentIndex(current_target_limb_index)
+        self.layout.addWidget(self.target_limb_dropdown)
+
         # Create and configure labels for FPS and interpolation delay
         self.fps_label = QLabel("FPS: 0")
         self.layout.addWidget(self.fps_label)
@@ -330,6 +339,7 @@ class GUIOverlay(QMainWindow):
         self.overlay_enabled_checkbox.stateChanged.connect(self.update_overlay)
         self.outline_color_dropdown.currentIndexChanged.connect(self.update_overlay_color)
         self.enemy_color_dropdown.currentIndexChanged.connect(self.update_enemy_color)
+        self.target_limb_dropdown.currentIndexChanged.connect(self.update_target_limb)
 
         # Update the value labels initially
         self.update_value_labels()
@@ -397,6 +407,11 @@ class GUIOverlay(QMainWindow):
 
         print("[INFO] Changed enemy color to " + self.enemy_color_dropdown.currentText())
 
+    def update_target_limb(self):
+        self.update_variables()
+
+        print("[INFO] Changed target limb to " + self.target_limb_dropdown.currentText())
+
     # Update variables when sliders or checkboxes change
     def update_variables(self):
         self.config.ENABLE_AIMBOT = self.aimbot_checkbox.isChecked()
@@ -439,6 +454,8 @@ class GUIOverlay(QMainWindow):
         elif color_name == "Red":
             self.config.ENEMY_COLOR_LOWER = np.array([150, 110, 110])
             self.config.ENEMY_COLOR_UPPER = np.array([255, 181, 150])
+
+        self.config.TARGET_LIMB = self.target_limb_dropdown.currentIndex()
 
 
 # Custom widget for the game overlay

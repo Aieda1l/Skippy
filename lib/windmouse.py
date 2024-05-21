@@ -22,14 +22,14 @@ class TimeNet(nn.Module):
 
 def wind_mouse(start_x, start_y, dest_x, dest_y, G_0=9, W_0=3, M_0=15, D_0=12, move_mouse=lambda x, y, pred_time: None,
                time_model=None):
-    '''
+    """
     WindMouse algorithm. Calls the move_mouse kwarg with each new step.
     Released under the terms of the GPLv3 license.
     G_0 - magnitude of the gravitational fornce
     W_0 - magnitude of the wind force fluctuations
     M_0 - maximum step size (velocity clip threshold)
     D_0 - distance where wind behavior changes from random to damped
-    '''
+    """
     current_x, current_y = start_x, start_y
     pred_time = 0
     v_x = v_y = W_x = W_y = 0

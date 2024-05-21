@@ -56,11 +56,10 @@ class MousePosition:
             else:
                 wpt.sleep(0.01)
 
-    def set_pos(self, x, y, steps):
+    def set_pos(self, x, y):
         self.idle = False
         self.target_x = x
         self.target_y = y
-        self.steps = steps
 
     def stop_mouse(self):
         self.kill = True

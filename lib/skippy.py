@@ -15,7 +15,7 @@ if __name__ == "__main__":
 
 # Custom modules
 from lib.grab import *
-from lib.mouse_handler import *
+from lib.mouse import *
 from lib.gui import *
 
 # Pose detection
@@ -38,7 +38,7 @@ class Config:
         self.DOT_RADIUS = 1
         # Aimbot configs
         self.SMOOTHNESS = 0
-        self.TARGET_LIMB = "head"
+        self.TARGET_LIMB = 0
         self.ENEMY_COLOR_LOWER = np.array([140, 110, 150])
         self.ENEMY_COLOR_UPPER = np.array([150, 195, 255])
 
@@ -317,11 +317,15 @@ class Skippy:
                     x = 0
                     y = 0
 
-                    for keypoint in best_pose:
-                        if any(keypoint):
-                            x = keypoint[0]
-                            y = keypoint[1]
-                            break
+                    if best_pose[self.config.TARGET_LIMB] and any(best_pose[self.config.TARGET_LIMB]):
+                        x = best_pose[self.config.TARGET_LIMB][0]
+                        y = best_pose[self.config.TARGET_LIMB][1]
+                    else:
+                        for keypoint in best_pose:
+                            if any(keypoint):
+                                x = keypoint[0]
+                                y = keypoint[1]
+                                break
 
                     # Draw target dot on the frame
                     cv2.circle(overlay_image, (int(x), int(y)), 5, (0, 0, 255), -1)
@@ -333,7 +337,7 @@ class Skippy:
                         mouseX = scaledX + (self.Wd - overlay_image.shape[0] / scale_factor) / 2
                         mouseY = scaledY + (self.Hd - overlay_image.shape[1] / scale_factor) / 2
 
-                        self.mouse_position.set_pos(mouseX, mouseY, self.config.SMOOTHNESS)
+                        self.mouse_position.set_pos(mouseX, mouseY)
 
             cv2.imshow('Neural Net Vision (Skippy)', overlay_image)
             elapsed = timeit.default_timer() - start_time

@@ -94,7 +94,6 @@ class TitleBar(QWidget):
 
     def onClickClose(self):
         print("\n[INFO] Cleaning up...")
-        self.skippy.mouse_position.stop_mouse()
         self.skippy.sct.close()
         cv2.destroyAllWindows()
         self.skippy.gui.main_window.close()
@@ -269,7 +268,7 @@ class GUIOverlay(QMainWindow):
         self.smoothness_label = QLabel("Smoothness:")
         self.layout.addWidget(self.smoothness_label)
         self.smoothness_slider = QSlider(Qt.Horizontal)
-        self.smoothness_slider.setMinimum(0)
+        self.smoothness_slider.setMinimum(1)
         self.smoothness_slider.setMaximum(10)
         self.smoothness_slider.setValue(self.config.SMOOTHNESS)
         smoothness_layout.addWidget(self.smoothness_slider)
@@ -279,8 +278,8 @@ class GUIOverlay(QMainWindow):
         self.layout.addLayout(smoothness_layout)
 
         # Create labels to display min and max values for the slider
-        self.smoothness_min_label = QLabel("Min: 0")
-        self.smoothness_max_label = QLabel("Max: 20")
+        self.smoothness_min_label = QLabel("Min: 1")
+        self.smoothness_max_label = QLabel("Max: 10")
         smoothness_min_max_layout = QHBoxLayout()
         smoothness_min_max_layout.addWidget(self.smoothness_min_label)
         smoothness_min_max_layout.addWidget(self.smoothness_slider)
@@ -359,7 +358,6 @@ class GUIOverlay(QMainWindow):
     # Log whether aimbot is enabled
     def update_aimbot(self):
         self.update_variables()
-        self.skippy.mouse_position.toggle_movement()
 
         if not self.config.ENABLE_AIMBOT:
             print("[INFO] Aimbot disabled, using visualizer only...")
@@ -420,7 +418,7 @@ class GUIOverlay(QMainWindow):
         self.config.ACTIVATION_RANGE = self.activation_range_slider.value()
         self.config.OVERLAY_ENABLED = self.overlay_enabled_checkbox.isChecked()
         self.config.CIRCLE_RADIUS = min(self.config.ACTIVATION_RANGE, self.config.ACTIVATION_RANGE) // 2
-        self.config.SMOOTHNESS = self.smoothness_slider.value()
+        self.config.SMOOTHNESS = float(self.smoothness_slider.value()) / 10.0
 
         # Update the min and max labels for sliders
         self.confidence_min_label.setText(f"Min: {self.confidence_slider.minimum() / 100.0:.2f}")

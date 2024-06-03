@@ -1,3 +1,8 @@
-version https://git-lfs.github.com/spec/v1
-oid sha256:8096a625eb170feb7894b3918d8c6097f2e36b87ef4eb5543f2a28b321e30f38
-size 264
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/Skippy.iml" filepath="$PROJECT_DIR$/.idea/Skippy.iml" />
+    </modules>
+  </component>
+</project>

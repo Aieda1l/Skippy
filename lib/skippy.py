@@ -337,7 +337,17 @@ class Skippy:
                         mouseX = scaledX + (self.Wd - overlay_image.shape[0] / scale_factor) / 2
                         mouseY = scaledY + (self.Hd - overlay_image.shape[1] / scale_factor) / 2
 
-                        self.mouse_position.set_pos(mouseX, mouseY)
+                        new_x = 1 + int(mouseX * 65536.0 / self.Wd)  # Adjust for screen width
+                        new_y = 1 + int(mouseY * 65536.0 / self.Hd)  # Adjust for screen height
+
+                        extra = ctypes.c_ulong(0)
+                        ii_ = pynput._util.win32.INPUT_union()
+                        ii_.mi = pynput._util.win32.MOUSEINPUT(new_x, new_y, 0, (0x0001 | 0x8000), 0,
+                                                               ctypes.cast(ctypes.pointer(extra), ctypes.c_void_p))
+                        command = pynput._util.win32.INPUT(ctypes.c_ulong(0), ii_)
+                        SendInput(1, ctypes.pointer(command), ctypes.sizeof(command))
+
+                        #self.mouse_position.set_pos(mouseX, mouseY)
 
             cv2.imshow('Neural Net Vision (Skippy)', overlay_image)
             elapsed = timeit.default_timer() - start_time

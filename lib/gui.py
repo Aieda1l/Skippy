@@ -308,7 +308,7 @@ class GUIOverlay(QMainWindow):
         self.enemy_color_label = QLabel("Outline Color:")
         self.layout.addWidget(self.enemy_color_label)
         self.enemy_color_dropdown = QComboBox()
-        self.enemy_color_dropdown.addItems(["Purple", "Red"])
+        self.enemy_color_dropdown.addItems(["Purple", "Red", "Any"])
         current_enemy_color_index = self.enemy_color_dropdown.findText("Purple")
         self.enemy_color_dropdown.setCurrentIndex(current_enemy_color_index)
         self.layout.addWidget(self.enemy_color_dropdown)
@@ -454,6 +454,9 @@ class GUIOverlay(QMainWindow):
         elif color_name == "Red":
             self.config.ENEMY_COLOR_LOWER = np.array([150, 110, 110])
             self.config.ENEMY_COLOR_UPPER = np.array([255, 181, 150])
+        elif color_name == "Any":
+            self.config.ENEMY_COLOR_LOWER = np.array([0, 0, 0])
+            self.config.ENEMY_COLOR_UPPER = np.array([255, 255, 255])
 
         self.config.TARGET_LIMB = self.target_limb_dropdown.currentIndex()
 
